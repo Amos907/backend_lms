@@ -5,10 +5,10 @@ from .models import LoanType, Loan
 
 class LoanAdminSite(admin.ModelAdmin):
     model = Loan
-    fields = ['id','user','full_name', 'loan_amount','date_created','payment_plan','installment']
-    list_display = ('id','user','full_name','loan_amount','payment_plan','installment')
+    fields = ['id','user','full_name', 'loan_amount','date_created','payment_plan','installment','balance','overdue_amount','complete','initial_installment',]
+    list_display = ('id','user','full_name','loan_amount','payment_plan','installment','balance','overdue_amount','complete','initial_installment')
 
-    readonly_fields = ['date_created','id']
+    readonly_fields = ['date_created','id','balance']
 
 class LoanTypeAdminSite(admin.ModelAdmin):
     model = LoanType

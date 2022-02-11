@@ -1,4 +1,5 @@
 from django.db import models
+from mpesa_payments.models import C2BMpesaPayment
 # Create your models here.
 class LoanType(models.Model):
     id = models.AutoField(primary_key=True)
@@ -32,8 +33,11 @@ class Loan(models.Model):
     loan_amount = models.CharField(max_length = 200, null =True,blank  =True)
     payment_plan = models.CharField(max_length = 200, default = "4 Weeks",null =True, blank =True)
     installment = models.CharField(max_length = 200,null = True,blank = True)
+    initial_installment = models.CharField(max_length = 200,null = True,blank = True)
     date_created = models.DateTimeField(
         auto_now=True)
+    complete = models.BooleanField(default = False)
+    overdue_amount = models.IntegerField(default = 0)
 
 
 
@@ -49,6 +53,16 @@ class Loan(models.Model):
         for i in Loan.objects.filter(loan_amount = str(amount)):
             num += 1
         return num
+
+    def balance(self):
+        paid_amount = 0
+        for i in Loan.objects.filter(complete = False):
+            for x in C2BMpesaPayment.objects.filter(full_name = i.full_name,amount = i.loan_amount,complete = False):
+                paid_amount += x.amount
+            total_amount = int(i.initial_installment) * int(i.payment_plan[0])
+            balance = total_amount - paid_amount
+         
+        return balance
 
     @property
     def get_date_created(self):

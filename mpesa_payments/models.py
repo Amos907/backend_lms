@@ -13,6 +13,7 @@ class C2BMpesaPayment(models.Model):
     date_created = models.DateTimeField(
         auto_now=True)
     week = models.CharField(max_length = 200,null = True,blank = True)
+    complete = models.BooleanField(default = False)
     
 class B2CMpesaPayment(models.Model):
     id = models.AutoField(primary_key = True)
@@ -34,6 +35,7 @@ class OverduePayments(models.Model):
     amount_due = models.CharField(max_length = 200, null =True,blank  =True)
     week_due = models.CharField(max_length = 200,null = True,blank = True)
     days_due = models.IntegerField(default = 1)
+    complete = models.BooleanField(default = False)
 
 class PaymentsToday(models.Model):
     id = models.AutoField(primary_key = True)
