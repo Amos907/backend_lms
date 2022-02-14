@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'xz+gc&+v=0(v*e#o^8p5%b^@e*l113pno%4tznrj4xt80m2ivo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['lms-api-testing.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'core.user',
     'loans',
     'mpesa_payments',
-    #'django_crontab'
+    'django_crontab'
 
 ]
 
@@ -142,14 +142,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000"
+    "http://idealplus.co.ke",
 ]
 
-# CRONJOBS = [
-#     ('1 0 * * *', 'mpesa_payments.cron.payments_cron_job'),
-#     ('*/5 * * * *', 'mpesa_payments.cron.overdue_status'),
-#     ('0 1 * * *', 'mpesa_payments.cron.increment_days')
-# ]
+CRONJOBS = [
+    ('1 0 * * *', 'mpesa_payments.cron.payments_cron_job'),
+    ('*/5 * * * *', 'mpesa_payments.cron.overdue_status'),
+    ('0 1 * * *', 'mpesa_payments.cron.increment_days')
+]
 
-# CRONTAB_COMMAND_SUFFIX = '2>&1'
+CRONTAB_COMMAND_SUFFIX = '2>&1'
