@@ -1,6 +1,7 @@
 from django.db import models
 from mpesa_payments.models import C2BMpesaPayment
 # Create your models here.
+
 class LoanType(models.Model):
     id = models.AutoField(primary_key=True)
     loan_amount = models.CharField(
@@ -54,14 +55,20 @@ class Loan(models.Model):
             num += 1
         return num
 
+
     def balance(self):
         paid_amount = 0
+        balance = 0
         for i in Loan.objects.filter(complete = False):
-            for x in C2BMpesaPayment.objects.filter(full_name = i.full_name,amount = i.loan_amount,complete = False):
-                paid_amount += x.amount
+            payment = C2BMpesaPayment.objects.filter(full_name = i.full_name,complete = False)
             total_amount = int(i.initial_installment) * int(i.payment_plan[0])
-            balance = total_amount - paid_amount
-         
+            if payment.exists():
+                for x in payment:
+                    paid_amount += int(x.amount)
+                    balance = total_amount - paid_amount
+
+            else:
+                balance = total_amount
         return balance
 
     @property

@@ -12,7 +12,9 @@ def payments_cron_job():
 	week_name = "week " + str(week)
 	next_payment = loan.date_created.date() + timedelta(7)
 
-	for loan in Loan.objects.all():
+	for loan in Loan.objects.filter(complete = False):
+		if loan.balance == 0:
+			loan.objects.update(complete = True)
 		if week < int(loan.payment_plan[0]):
 			if today == next_payment:
 				paymentsToday = PaymentsToday.objects.create(
@@ -33,7 +35,7 @@ def payments_cron_job():
 						amount_due = loan.installment,
 					)
 					overdue.save()
-					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(overdue_amount = loan.overdue_amount + int(loan.installment))
+					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount, complete = False).update(overdue_amount = loan.overdue_amount + int(loan.installment))
 				else:
 					if payment.amount <  loan.installment:
 						amount_due = int(loan.installment) - int(payment.amount)
@@ -44,10 +46,10 @@ def payments_cron_job():
 						amount_due = amount_due,
 						) 
 						overdue.save()
-						Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(overdue_amount = loan.overdue_amount + amount_due
+						Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount,complete = False).update(overdue_amount = loan.overdue_amount + amount_due
 					else if payment.amount > loan.installment:
 						overpaid = payment.amount - loan.installment
-						Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(installment  = overpaid)
+						Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount,complete = False).update(installment  = overpaid)
 			week = week + 1
 			next_payment = next_payment + timedelta(7)
 
@@ -72,7 +74,7 @@ def payments_cron_job():
 						amount_due = loan.installment,
 					)
 					overdue.save()
-					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(overdue_amount = loan.overdue_amount + int(loan.installment))
+					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount,complete = False).update(overdue_amount = loan.overdue_amount + int(loan.installment))
 				else if payment.exists() == True:
 					if payment.amount <  loan.installment:
 						amount_due = int(loan.installment) - int(payment.amount)
@@ -86,15 +88,15 @@ def payments_cron_job():
 						Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(overdue_amount = loan.overdue_amount + amount_due)
 
 				else if payment.exists() == True and loan.amount_due == 0: 
-					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount).update(complete = True)
-					for i in C2BMpesaPayment.objects.filter(full_name = loan.full_name):
+					Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount,complete = False).update(complete = True)
+					for i in C2BMpesaPayment.objects.filter(full_name = loan.full_name,complete = False):
 						i.update(complete = True)
 
 
 def overdue_status():
 	# This cron job runs daily after five minutes...
 	for overdue in OverduePayments.objects.all():
-		for payment in C2BMpesaPayment.objects.all():
+		for payment in C2BMpesaPayment.objects.filter(complete = False):
 			if overdue.full_name == payment.full_name and overdue.week_due == payment.week:
 				loans = Loan.objects.get(full_name = payment.full_name)
 				if payment.amount == overdue.amount_due:
@@ -108,6 +110,8 @@ def overdue_status():
 def increment_days():
 	# This cron job will ru once a day...
 	OverduePayments.objects.all().update(days_due = F('days_due')+1)
+				 
+
 
 	
 
