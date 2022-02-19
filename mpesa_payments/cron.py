@@ -110,6 +110,25 @@ def overdue_status():
 def increment_days():
 	# This cron job will ru once a day...
 	OverduePayments.objects.all().update(days_due = F('days_due')+1)
+
+def check_balance():
+	paid_amount = 0
+    balance = 0
+    loans = Loan.objects.filter(complete = False)
+
+    for loan in loans:
+    	total_amount = int(loan.initial_installment) * int(loan.payment_plan[0])
+        payment = C2BMpesaPayment.objects.filter(full_name = loan.full_name,complete = False)
+        if payment.exists():
+            for x in payment:
+                
+                paid_amount = paid_amount + int(x.amount)
+                balance = total_amount - paid_amount        
+
+        else:
+            balance = total_amount
+    return balance
+
 				 
 
 

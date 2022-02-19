@@ -39,6 +39,7 @@ class Loan(models.Model):
         auto_now=True)
     complete = models.BooleanField(default = False)
     overdue_amount = models.IntegerField(default = 0)
+    total_balance = models.IntegerField(default = 0)
 
 
 
@@ -56,20 +57,22 @@ class Loan(models.Model):
         return num
 
 
-    def balance(self):
-        paid_amount = 0
-        balance = 0
-        for i in Loan.objects.filter(complete = False):
-            payment = C2BMpesaPayment.objects.filter(full_name = i.full_name,complete = False)
-            total_amount = int(i.initial_installment) * int(i.payment_plan[0])
-            if payment.exists():
-                for x in payment:
-                    paid_amount += int(x.amount)
-                    balance = total_amount - paid_amount
+    # def balance(self):
+    #     paid_amount = 0
+    #     balance = 0
+    #     loans = Loan.objects.filter(complete = False)
 
-            else:
-                balance = total_amount
-        return balance
+    #     for loan in loans:
+    #         payment = C2BMpesaPayment.objects.filter(full_name = loan.full_name,complete = False)
+    #         if payment.exists():
+    #             for x in payment:
+    #                 total_amount = int(loan.initial_installment) * int(loan.payment_plan[0])
+    #                 paid_amount = paid_amount + int(x.amount)
+    #                 balance = total_amount - paid_amount        
+
+    #         else:
+    #             balance = total_amount
+    #     return balance
 
     @property
     def get_date_created(self):
