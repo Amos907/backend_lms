@@ -4,10 +4,9 @@ from mpesa_payments.models import C2BMpesaPayment,B2CMpesaPayment,OverduePayment
 
 class C2BMpesaAdminSite(admin.ModelAdmin):
     model = C2BMpesaPayment
-    fields = ['id','mpesa','full_name', 'amount', 'phone_number']
-    list_display = ('id','mpesa','full_name', 'amount', 'phone_number')
-    fields = ['id','mpesa','full_name', 'amount', 'phone_number','week']
-    list_display = ('id','mpesa','full_name', 'amount', 'phone_number','week')
+
+    fields = ['id','mpesa','full_name','name', 'amount', 'phone_number','week','complete']
+    list_display = ('id','mpesa','full_name','name', 'amount', 'phone_number','week','complete')
     readonly_fields = ['id']
 
 class B2CMpesaAdminSite(admin.ModelAdmin):

@@ -1,5 +1,5 @@
 from django.db import models
-from mpesa_payments.models import C2BMpesaPayment
+ 
 # Create your models here.
 
 class LoanType(models.Model):
@@ -56,23 +56,10 @@ class Loan(models.Model):
             num += 1
         return num
 
-
-    # def balance(self):
-    #     paid_amount = 0
-    #     balance = 0
-    #     loans = Loan.objects.filter(complete = False)
-
-    #     for loan in loans:
-    #         payment = C2BMpesaPayment.objects.filter(full_name = loan.full_name,complete = False)
-    #         if payment.exists():
-    #             for x in payment:
-    #                 total_amount = int(loan.initial_installment) * int(loan.payment_plan[0])
-    #                 paid_amount = paid_amount + int(x.amount)
-    #                 balance = total_amount - paid_amount        
-
-    #         else:
-    #             balance = total_amount
-    #     return balance
+    @property
+    def total(self):
+        total_amount = int(self.initial_installment) * int(self.payment_plan[0])
+        return total_amount
 
     @property
     def get_date_created(self):

@@ -165,7 +165,8 @@ CORS_ALLOWED_ORIGINS = [
 # CRONJOBS = [
 #     ('1 0 * * *', 'mpesa_payments.cron.payments_cron_job'),
 #     ('*/5 * * * *', 'mpesa_payments.cron.overdue_status'),
-#     ('0 1 * * *', 'mpesa_payments.cron.increment_days')
+#     ('0 1 * * *', 'mpesa_payments.cron.increment_days'),
+#     ('*/1 * * * *', 'mpesa_payments.cron.check_balance')
 # ]
 
 # CRONTAB_COMMAND_SUFFIX = '2>&1'
