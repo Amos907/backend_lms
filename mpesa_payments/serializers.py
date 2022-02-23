@@ -4,7 +4,7 @@ from mpesa_payments.models import C2BMpesaPayment,B2CMpesaPayment,OverduePayment
 class C2BPaymentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = C2BMpesaPayment
-        fields = ['id','mpesa','full_name','name','amount','phone_number']
+        fields = ['id','mpesa','full_name','name','amount','phone_number','week']
 
 class B2CPaymentsSerializer(serializers.ModelSerializer):
     class Meta:
