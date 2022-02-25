@@ -25,5 +25,5 @@ class Command(BaseCommand):
 				Loan.objects.filter(full_name = loan.full_name,loan_amount = loan.loan_amount,complete = False).update(total_balance = loan.total)		 
 				
 			paid_amount = 0
-		self.stdout.write("Balances Updated Succes")
+		self.stdout.write("Balances Updated Succesfully")
 
