@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'xz+gc&+v=0(v*e#o^8p5%b^@e*l113pno%4tznrj4xt80m2ivo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-#ALLOWED_HOSTS = ['lms-api-testing.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['lms-api-testing.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -105,9 +105,9 @@ DATABASES = {
     }
 }
 
-# import dj_database_url
-# db_from_env = dj_database_url.config(conn_max_age = 600)
-# DATABASES['default'].update(db_from_env)
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age = 600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -158,8 +158,8 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
 CORS_ALLOWED_ORIGINS = [
-    # "http://idealplus.co.ke",
-    # "http://localhost:3000"
+    "http://idealplus.co.ke",
+ 
 ]
 
 # CRONJOBS = [

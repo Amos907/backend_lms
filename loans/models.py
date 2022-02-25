@@ -58,7 +58,15 @@ class Loan(models.Model):
 
     @property
     def total(self):
-        total_amount = int(self.initial_installment) * int(self.payment_plan[0])
+        plan = self.payment_plan
+        weeks = 0
+
+        if len(plan) == 6:
+            weeks = int(plan[0])
+
+        elif len(plan) > 6:
+            weeks = int(plan[:2])
+        total_amount = int(self.initial_installment) * weeks
         return total_amount
 
     @property
