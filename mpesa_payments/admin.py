@@ -25,8 +25,8 @@ class OverdueAdminSite(admin.ModelAdmin):
 
 class PaymentsTodayAdminSite(admin.ModelAdmin):
     model = PaymentsToday
-    fields = ['id','full_name','date', 'installment', 'week']
-    list_display = ('id','full_name','loan_amount','date', 'installment', 'week')
+    fields = ['id','full_name','date', 'installment', 'week','loan_amount']
+    list_display = ('id','full_name','loan_amount','date', 'installment', 'week','loan_amount')
 
     readonly_fields = ['id']
 
