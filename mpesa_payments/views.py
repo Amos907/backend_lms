@@ -2,7 +2,7 @@ from rest_framework import permissions, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-import time
+from datetime import date
 
 from mpesa_payments.serializers import C2BPaymentsSerializer,B2CPaymentsSerializer,OverdueSerializer,PaymentsTodaySerializer
 from mpesa_payments.models import C2BMpesaPayment,B2CMpesaPayment,OverduePayments,PaymentsToday
@@ -60,6 +60,7 @@ class OverduePaymentsView(APIView):
 
 class PaymentsTodayView(APIView):
     def get(self, request):
-        queryset = PaymentsToday.objects.filter(date = str(time.strftime(r"%Y-%m-%d", time.localtime())))
+        today = date.today()
+        queryset = PaymentsToday.objects.filter(date = today)
         serializer = PaymentsTodaySerializer(queryset, many=True)
         return Response(serializer.data)
