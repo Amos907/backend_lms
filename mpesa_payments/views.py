@@ -61,6 +61,6 @@ class OverduePaymentsView(APIView):
 class PaymentsTodayView(APIView):
     def get(self, request):
         today = date.today()
-        queryset = PaymentsToday.objects.filter(date = today)
+        queryset = PaymentsToday.objects.filter(date = str(today))
         serializer = PaymentsTodaySerializer(queryset, many=True)
         return Response(serializer.data)
