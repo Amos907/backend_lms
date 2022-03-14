@@ -18,7 +18,7 @@ class Command(BaseCommand):
 		OverduePayments.objects.all().update(days_due = F('days_due')+1)
 
 		for loan in Loan.objects.filter(complete = False):
-			while week < int(loans.payment_plan[0]):
+			while week < int(loan.payment_plan[0]):
 				payment_overdue = loan.date_created.date() + timedelta(8)
 
 				if today ==  str(payment_overdue):
