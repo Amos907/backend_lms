@@ -2,7 +2,7 @@ from rest_framework import permissions, authentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from datetime import date
+import time
 
 from mpesa_payments.serializers import C2BPaymentsSerializer,B2CPaymentsSerializer,OverdueSerializer,PaymentsTodaySerializer
 from mpesa_payments.models import C2BMpesaPayment,B2CMpesaPayment,OverduePayments,PaymentsToday
