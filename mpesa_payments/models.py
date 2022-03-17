@@ -5,7 +5,7 @@ class C2BMpesaPayment(models.Model):
     id = models.AutoField(primary_key = True)
     mpesa = models.CharField(max_length=200, null=True, blank=True)
     name = models.CharField(max_length = 200,null = True,blank = True)
-    full_name = models.ForeignKey(Loan,on_delete = models.CASCADE,blank = True,null = True)
+    full_name = models.CharField(max_length = 200,null = True,blank = True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     phone_number = models.CharField(max_length = 200,null = True,blank = True)
     date_created = models.DateTimeField(
