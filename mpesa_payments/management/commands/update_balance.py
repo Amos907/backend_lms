@@ -15,7 +15,7 @@ class Command(BaseCommand):
 		loans = Loan.objects.filter(complete = False)
 		 
 		for loan in loans:
-			payment = loan.c2bmpesapayment_set.all()
+			payment = C2BMpesaPayment.objects.filter(full_name = loan.user,name = loan.full_name,complete = False)
 			if payment:
 				for x in payment:
 					paid_amount = paid_amount + int(x.amount)

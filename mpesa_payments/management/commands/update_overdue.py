@@ -12,10 +12,10 @@ class Command(BaseCommand):
 		for overdue in OverduePayments.objects.all():
 			for payment in C2BMpesaPayment.objects.filter(complete = False):
 				if overdue.full_name == payment.full_name and overdue.week_due == payment.week:
-					loans = Loan.objects.get(user = payment.full_name)
+					loans = Loan.objects.get(user = payment.full_name,complete = False)
 					if payment.amount == overdue.amount_due:
 						OverduePayments.objects.filter(full_name = payment.full_name,week_due = payment.week).delete()
-
+						loans.update(overdue_amount = 0)
 					elif payment.amount < overdue.amount_due:
 						amount_due = int(loans.installment) - int(payment.amount)
 						OverduePayments.objects.filter(full_name = payment.full_name,week_due = payment.week).update(amount_due = amount_due)
